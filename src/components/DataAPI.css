@@ -1,0 +1,12 @@
+.divCard {
+    position: absolute;
+    left: 0px;
+    padding-top: 100px;
+    padding-left: 200px;
+    width: 100%;
+    display: flex;
+}
+
+.typoPad {
+    padding-bottom: 10px;
+}

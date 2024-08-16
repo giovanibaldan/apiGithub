@@ -1,7 +1,9 @@
 .inputDiv {
     display: flex;
+    width: 100vm;
+    justify-content: center;
 }
 
-.searchButton {
-    width: 100vm;
+.inputForm {
+    width: 400px;
 }
