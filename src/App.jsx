@@ -15,7 +15,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Header />
-      <InputAPI />
       <DataAPI />
     </ThemeProvider>
   );
