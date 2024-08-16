@@ -1,7 +1,13 @@
 .inputDiv {
     display: flex;
+    width: 100vm;
+    justify-content: center;
+}
+
+.inputForm {
+    width: 400px;
 }
 
 .searchButton {
-    width: 100vm;
+
 }
