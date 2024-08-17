@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Card, CardMedia, CardContent, Typography } from '@mui/material'
 import InputAPI from './InputAPI'
+import ReposAPI from './ReposAPI'
 import './DataAPI.css'
 
 function DataAPI() {
@@ -44,8 +45,11 @@ function DataAPI() {
     }
 
     return (
-        <div>
+        <>
             <InputAPI handleSearch={handleSearch} handleSubmit={handleSubmit} />
+            <div>
+                
+            </div>
             {photo && (
                 <div className='divCard'>
                     <Card sx={{ maxWidth: 250 }}>
@@ -66,9 +70,10 @@ function DataAPI() {
                             </Typography>
                         </CardContent>
                     </Card>
+                    <ReposAPI />
                 </div>
             )}
-        </div>
+        </>
     )
 }
 

@@ -1,0 +1,14 @@
+.tableData {
+    padding-left: 30px;
+}
+
+.fav {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.favIcon{
+    padding-right: 3.5px;
+    color: #e3b341
+}

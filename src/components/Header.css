@@ -1,5 +1,6 @@
 .divHeader {
-    padding: 15px;
+    padding-top: 30px;
+    padding-bottom: 20px;
     width: 100%;
     display: flex;
     justify-content: center;
