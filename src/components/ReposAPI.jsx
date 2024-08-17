@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TableContainer, Table, TableHead, TableCell, TableBody, TableRow, Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import './ReposAPI.css';
 
-function ReposAPI({ searchQuery }) {
-    const [repos, setRepos] = useState([]);
-
-    useEffect(() => {
-        if (searchQuery) {
-            fetch(`https://api.github.com/users/${searchQuery}/repos`)
-                .then((res) => res.json())
-                .then((data) => {
-                    if (Array.isArray(data)) {
-                        setRepos(data);
-                    } else {
-                        setRepos([]);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Erro ao buscar repositórios:", error);
-                    setRepos([]);
-                });
-        }
-    }, [searchQuery]);
-
+function ReposAPI({ repos }) {
     return (
         <TableContainer className='tableData' sx={{ minWidth: 500, maxWidth: 650 }}>
             <Table aria-label="simple table">
