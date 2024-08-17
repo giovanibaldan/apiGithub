@@ -5,6 +5,7 @@
     padding-left: 22%;
     width: 100%;
     display: flex;
+    align-items: flex-start;
 }
 
 .typoPad {
