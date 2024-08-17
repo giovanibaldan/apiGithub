@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Card, CardMedia, CardContent, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import InputAPI from './InputAPI';
+import CardAPI from './CardAPI';
 import ReposAPI from './ReposAPI';
 import './DataAPI.css';
 
@@ -11,6 +11,7 @@ function DataAPI() {
     const [photo, setPhoto] = useState('');
     const [userInput, setUserInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const [repos, setRepos] = useState([]);
     const [error, setError] = useState(null);
 
     const setData = ({ avatar_url, bio, login, name }) => {
@@ -37,28 +38,31 @@ function DataAPI() {
             });
     };
 
+    useEffect(() => {
+        if (searchQuery) {
+            fetch(`https://api.github.com/users/${searchQuery}/repos`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (Array.isArray(data)) {
+                        setRepos(data);
+                    } else {
+                        setRepos([]);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Erro ao buscar repositórios:", error);
+                    setRepos([]);
+                });
+        }
+    }, [searchQuery]);
+
     return (
         <>
             <InputAPI handleSearch={handleSearch} handleSubmit={handleSubmit} />
             {photo && (
                 <div className='divCard'>
-                    <Card sx={{ maxWidth: 250, minWidth: 250, minHeight: 'fit-content' }}>
-                        <CardMedia sx={{ height: 250 }} image={photo} title={name} />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                {name}
-                            </Typography>
-                            <Typography className='typoPad' variant="body2" color="text.secondary">
-                                @{user}
-                            </Typography>
-                            {userInfo && (
-                                <Typography variant="body2" color="text.primary">
-                                    {userInfo}
-                                </Typography>
-                            )}
-                        </CardContent>
-                    </Card>
-                    <ReposAPI searchQuery={searchQuery} />
+                    <CardAPI photo={photo} name={name} user={user} userInfo={userInfo} />
+                    <ReposAPI repos={repos} />
                 </div>
             )}
         </>
