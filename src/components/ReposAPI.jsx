@@ -5,7 +5,7 @@ import './ReposAPI.css';
 
 function ReposAPI({ repos }) {
     return (
-        <TableContainer className='tableData' sx={{ minWidth: 500, maxWidth: 650 }}>
+        <TableContainer className='tableData' sx={{ minWidth: 500, maxWidth: 650, paddingLeft: 2.5 }}>
             <Table aria-label="simple table">
                 <TableHead className='tableHeadData'>
                     <TableRow>
@@ -25,8 +25,8 @@ function ReposAPI({ repos }) {
                                             <Typography variant="body2" color="text.secondary">
                                                 {repo.description}
                                             </Typography>
-                                            <Typography className='fav' variant='inherit'>
-                                                <StarIcon className='favIcon' fontSize='small' />
+                                            <Typography sx={{ paddingTop: 2.5, display: 'flex', alignItems: 'center', margin: 0 }} variant='inherit'>
+                                                <StarIcon sx={{ paddingRight: 1, color: "#e3b341" }} fontSize='small' />
                                                 {repo.stargazers_count}
                                             </Typography>
                                         </CardContent>
