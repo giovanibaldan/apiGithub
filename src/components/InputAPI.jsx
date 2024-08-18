@@ -1,5 +1,4 @@
 import React from 'react';
-import './InputAPI.css';
 import { TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';

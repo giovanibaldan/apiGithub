@@ -1,7 +1,6 @@
 import React from 'react';
 import { TableContainer, Table, TableHead, TableCell, TableBody, TableRow, Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import './ReposAPI.css';
 
 function ReposAPI({ repos }) {
     return (

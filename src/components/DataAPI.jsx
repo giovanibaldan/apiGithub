@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import InputAPI from './InputAPI';
 import CardAPI from './CardAPI';
 import ReposAPI from './ReposAPI';
-import './DataAPI.css';
 
 function DataAPI() {
     const [name, setName] = useState('');

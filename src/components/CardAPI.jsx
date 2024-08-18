@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
-import './CardAPI.css';
 
 function CardAPI({ photo, name, user, userInfo }) {
     return (
