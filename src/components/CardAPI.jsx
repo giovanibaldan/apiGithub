@@ -10,7 +10,7 @@ function CardAPI({ photo, name, user, userInfo }) {
                 <Typography gutterBottom variant="h5" component="div">
                     {name}
                 </Typography>
-                <Typography className='typoPad' variant="body2" color="text.secondary">
+                <Typography sx={{ paddingBottom: 1 }} variant="body2" color="text.secondary">
                     @{user}
                 </Typography>
                 {userInfo && (
@@ -19,7 +19,7 @@ function CardAPI({ photo, name, user, userInfo }) {
                     </Typography>
                 )}
             </CardContent>
-        </Card>
+        </Card >
     );
 }
 
