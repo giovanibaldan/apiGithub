@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 
 function InputAPI({ handleSearch, handleSubmit }) {
     return (
-        <form style={{ display: 'flex', width: "100vm", justifyContent: "center" }} onSubmit={handleSubmit}>
+        <form style={{ display: 'flex', width: "100vm", justifyContent: "center", paddingBottom: 75 }} onSubmit={handleSubmit}>
             <TextField sx={{ width: 400 }} label="@ do Github" id="fullWidth" onChange={handleSearch} />
             <Button variant="contained" size="large" onClick={handleSubmit}>
                 <SearchIcon />

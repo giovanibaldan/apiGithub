@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InputAPI from './InputAPI';
 import CardAPI from './CardAPI';
 import ReposAPI from './ReposAPI';
+import Loading from './Loading';
 
 function DataAPI() {
     const [name, setName] = useState('');
@@ -10,7 +11,7 @@ function DataAPI() {
     const [photo, setPhoto] = useState('');
     const [repos, setRepos] = useState([]);
     const [userInput, setUserInput] = useState('');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const setData = ({ avatar_url, bio, login, name }) => {
@@ -26,43 +27,38 @@ function DataAPI() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setSearchQuery(userInput);
-        fetch(`https://api.github.com/users/${userInput}`)
+        setIsLoading(true);
+        fetch(`https://api.github.com/users/${userInput}`) // Puxando os dados do usuário
             .then((res) => res.json())
             .then((data) => {
                 setData(data);
+                return fetch(`https://api.github.com/users/${userInput}/repos`); // Puxando os dados dos repositórios do usuário
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                setRepos(Array.isArray(data) ? data : []);
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1100);
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
+                setIsLoading(false);
             });
     };
-
-    useEffect(() => {
-        if (searchQuery) {
-            fetch(`https://api.github.com/users/${searchQuery}/repos`)
-                .then((res) => res.json())
-                .then((data) => {
-                    if (Array.isArray(data)) {
-                        setRepos(data);
-                    } else {
-                        setRepos([]);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Erro ao buscar repositórios:", error);
-                    setRepos([]);
-                });
-        }
-    }, [searchQuery]);
 
     return (
         <>
             <InputAPI handleSearch={handleSearch} handleSubmit={handleSubmit} />
-            {photo && (
-                <div style={{ position: "absolute", display: "flex", alignItems: "flex-start", left: 0, width: "100%", paddingTop: 100, paddingLeft: "22%" }}>
-                    <CardAPI photo={photo} name={name} user={user} userInfo={userInfo} />
-                    <ReposAPI repos={repos} />
-                </div>
+            {isLoading ? (
+                <Loading />
+            ) : (
+                photo && (
+                    <div style={{ position: "absolute", display: "flex", alignItems: "flex-start", left: 0, width: "100%", paddingLeft: "22%" }}>
+                        <CardAPI photo={photo} name={name} user={user} userInfo={userInfo} />
+                        <ReposAPI repos={repos} />
+                    </div>
+                )
             )}
         </>
     );
