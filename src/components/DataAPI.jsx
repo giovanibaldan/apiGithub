@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputAPI from './InputAPI';
 import CardAPI from './CardAPI';
 import ReposAPI from './ReposAPI';
@@ -13,6 +13,9 @@ function DataAPI() {
     const [repos, setRepos] = useState([]);
     const [userInput, setUserInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const [fetchError, setFetchError] = useState(null);
 
     const setData = ({ avatar_url, bio, login, name }) => {
@@ -30,7 +33,12 @@ function DataAPI() {
         e.preventDefault();
         setIsLoading(true);
         setFetchError(null);
-        fetch(`https://api.github.com/users/${userInput}`)
+        setPage(1);
+        setHasMore(true);
+
+        const input = userInput.trim(); // Remover espaços no começo e no fim do input do usuário
+
+        fetchWithAuth(`https://api.github.com/users/${input}`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Usuário não encontrado');
@@ -39,25 +47,77 @@ function DataAPI() {
             })
             .then((data) => {
                 setData(data);
-                return fetch(`https://api.github.com/users/${userInput}/repos`);
+                return fetchWithAuth(`https://api.github.com/users/${input}/repos?per_page=30&page=1`);
             })
             .then((res) => res.json())
             .then((data) => {
                 setRepos(Array.isArray(data) ? data : []);
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000);
+                setIsLoading(false);
+                setHasMore(data.length === 30);
             })
             .catch((error) => {
                 console.error("API fetch error:", error);
-                setFetchError(userInput);
+                setFetchError(input);
                 setIsLoading(false);
             });
     };
 
+    const loadMoreRepos = () => {
+        if (!hasMore || isLoadingMore) return;
+
+        setIsLoadingMore(true);
+
+        console.log(`Carregando a página ${page + 1} com fetch para o usuário: ${user}`);
+
+        fetchWithAuth(`https://api.github.com/users/${user}/repos?per_page=30&page=${page + 1}`)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`Erro ao carregar mais repositórios: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (Array.isArray(data)) {
+                    setRepos(prevRepos => [...prevRepos, ...data]);
+                    setPage(prevPage => prevPage + 1);
+                    setHasMore(data.length === 30);
+                } else {
+                    setHasMore(false);
+                }
+                setIsLoadingMore(false);
+            })
+            .catch((error) => {
+                console.error("Erro na API Fetch:", error);
+                setIsLoadingMore(false);
+            });
+    };
+
+    const fetchWithAuth = (url) => {
+        return fetch(url, {
+            headers: {
+                // Authorization: `token ${GITHUB_TOKEN}``
+            }
+        });
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            if (scrollTop + windowHeight >= documentHeight - 300 && hasMore && !isLoadingMore) {
+                loadMoreRepos();
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [hasMore, isLoadingMore, user]);
+
     return (
         <>
-
             <InputAPI handleSearch={handleSearch} handleSubmit={handleSubmit} />
             {isLoading ? (
                 <Loading />
@@ -71,6 +131,7 @@ function DataAPI() {
                     </div>
                 )
             )}
+            {isLoadingMore && <Loading />}
         </>
     );
 }
