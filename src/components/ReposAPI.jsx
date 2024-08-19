@@ -12,8 +12,8 @@ function ReposAPI({ repos }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {repos.map((repo) => (
-                        <TableRow key={repo.id}>
+                    {repos.map((repo, index) => (
+                        <TableRow key={`${repo.id}-${index}`}>
                             <TableCell>
                                 <Card sx={{ maxWidth: 700 }}>
                                     <CardActionArea component="a" href={repo.html_url} target="_blank" rel="noopener noreferrer">
