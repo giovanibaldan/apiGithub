@@ -6,7 +6,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* height: 100vh; */
   font-family: 'Roboto', sans-serif;
   width: 100vw;
   overflow-x: hidden;

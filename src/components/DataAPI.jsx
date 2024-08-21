@@ -1,9 +1,16 @@
+// Componente principal que gerencia a lógica de busca e exibição de dados de um usuário do GitHub.
+// Utiliza hooks do React para controle de estado e efeito colateral, e faz requisições para a API do GitHub
+// para buscar informações do usuário e seus repositórios. Inclui funcionalidades de busca, carregamento
+// infinito de repositórios e tratamento de erros.
+
 import React, { useState, useEffect } from 'react';
 import InputAPI from './InputAPI';
 import CardAPI from './CardAPI';
 import ReposAPI from './ReposAPI';
 import Loading from './Loading';
 import ErrorAPI from './ErrorAPI';
+import Header from './Header';
+import ResponsiveContent from './ResponsiveContent';
 
 function DataAPI() {
     const [name, setName] = useState('');
@@ -17,6 +24,16 @@ function DataAPI() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [fetchError, setFetchError] = useState(null);
+
+    const GITHUB_TOKEN = ''
+
+    const fetchWithAuth = (url) => {
+        return fetch(url, {
+            headers: {
+                Authorization: `token ${GITHUB_TOKEN}`
+            }
+        });
+    };
 
     const setData = ({ avatar_url, bio, login, name }) => {
         setPhoto(avatar_url);
@@ -36,7 +53,7 @@ function DataAPI() {
         setPage(1);
         setHasMore(true);
 
-        const input = userInput.trim(); // Remover espaços no começo e no fim do input do usuário
+        const input = userInput.trim();
 
         fetchWithAuth(`https://api.github.com/users/${input}`)
             .then((res) => {
@@ -67,8 +84,6 @@ function DataAPI() {
 
         setIsLoadingMore(true);
 
-        console.log(`Carregando a página ${page + 1} com fetch para o usuário: ${user}`);
-
         fetchWithAuth(`https://api.github.com/users/${user}/repos?per_page=30&page=${page + 1}`)
             .then((res) => {
                 if (!res.ok) {
@@ -92,14 +107,6 @@ function DataAPI() {
             });
     };
 
-    const fetchWithAuth = (url) => {
-        return fetch(url, {
-            headers: {
-                // Authorization: `token ${GITHUB_TOKEN}``
-            }
-        });
-    };
-
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
@@ -117,22 +124,25 @@ function DataAPI() {
     }, [hasMore, isLoadingMore, user]);
 
     return (
-        <>
+        <div style={{ maxWidth: '100vw', margin: '0 auto', boxSizing: 'border-box' }}>
+            <Header />
             <InputAPI handleSearch={handleSearch} handleSubmit={handleSubmit} />
             {isLoading ? (
                 <Loading />
             ) : fetchError ? (
                 <ErrorAPI userInput={fetchError} />
             ) : (
-                photo && (
-                    <div style={{ position: "absolute", display: "flex", alignItems: "flex-start", left: 0, width: "100%", paddingLeft: "22%" }}>
-                        <CardAPI photo={photo} name={name} user={user} userInfo={userInfo} />
-                        <ReposAPI repos={repos} />
-                    </div>
-                )
+                <>
+                    {user && (
+                        <ResponsiveContent>
+                            <CardAPI photo={photo} name={name} user={user} userInfo={userInfo} />
+                            <ReposAPI repos={repos} />
+                        </ResponsiveContent>
+                    )}
+                    {isLoadingMore && <Loading />}
+                </>
             )}
-            {isLoadingMore && <Loading />}
-        </>
+        </div>
     );
 }
 
