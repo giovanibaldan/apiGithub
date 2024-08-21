@@ -7,7 +7,7 @@
   Sobre o projeto:
 </h3>
 
-Desenvolvimento de uma aplicação Web que consuma uma API pública e apresente os dados utilizando componentes do Material UI. O objetivo é avaliar suas habilidades em desenvolvimento frontend, consumo de APIs e uso da biblioteca Material UI.
+Este projeto consiste no desenvolvimento de uma aplicação web simples que consome uma API pública e exibe os dados utilizando componentes do Material UI. O objetivo principal é demonstrar habilidades em desenvolvimento frontend, integração com APIs e utilização da biblioteca Material UI para a construção de interfaces modernas e responsivas
 
 <h3 align="left">
   Como a aplicação funciona:
