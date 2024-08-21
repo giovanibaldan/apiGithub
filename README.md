@@ -121,4 +121,4 @@ Isso irá iniciar o servidor de desenvolvimento, hospedando o projeto localmente
 <img src="https://github.com/user-attachments/assets/02c02db7-cfb2-4e8f-9d2a-0e011e0036eb" height="525px"/>
 
 
-<br> <br> <br>
+<br>
