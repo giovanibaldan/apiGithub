@@ -78,6 +78,10 @@ Isso irá iniciar o servidor de desenvolvimento, hospedando o projeto localmente
             <pre><b>React</b></pre>
         </td>
        <td align="center">
+            <img src="https://skillicons.dev/icons?i=materialui" width="65px" alt="C icon" /><br>
+            <pre><b>Material UI</b></pre>
+        </td>
+       <td align="center">
             <img src="https://skillicons.dev/icons?i=git" width="65px" alt="C icon" /><br>
             <pre><b>Git</b></pre>
         </td>
